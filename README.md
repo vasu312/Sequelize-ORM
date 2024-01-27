@@ -13,9 +13,9 @@ This tutorial provides a step-by-step guide on how to use Sequelize, a powerful 
 7. [Database Synchronization](#database-synchronization)
 8. [CRUD Operations](#crud-operations)
 9. [Validation](#validation)
-10. [Funtions](#function)
+10. [Funtions](#functions)
 11. [Raw Query](#raw-query)
-12. [Resources](#resources)
+12. [sequelize.fn](#sequelize.fn)
 
 ## Introduction
 
