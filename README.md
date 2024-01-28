@@ -15,7 +15,8 @@ This tutorial provides a step-by-step guide on how to use Sequelize, a powerful 
 9. [Validation](#validation)
 10. [Funtions](#functions)
 11. [Raw Query](#raw-query)
-12. [sequelize.fn](#sequelize.fn)
+12. [Sequelize.Fn](sequelize.fn)
+13. [Getter & Setter](#getter-&-setter)
 
 ## Introduction
 
@@ -603,4 +604,51 @@ console.log(
   "Users with Birth Year:",
   usersWithYear.map((user) => user.dataValues.birthYear)
 );
+```
+## Getter & Setter
+
+Getters and setters allow you to manipulate data before it is stored in the database (setter) or before it is retrieved from the database (getter). 
+
+```js
+const { Sequelize, DataTypes } = require('sequelize');
+
+// Create a Sequelize instance
+const sequelize = new Sequelize('database', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'mysql', // or any other supported dialect
+});
+
+// Define a model with getters and setters
+const User = sequelize.define('User', {
+  // Regular attributes
+  firstName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  fullName: {
+    type: DataTypes.VIRTUAL, // Virtual attribute that doesn't exist in the database
+    get() {
+      return `${this.firstName} ${this.lastName}`;
+    },
+    set(value) {
+      // Assuming that the full name is in the format "FirstName LastName"
+      const parts = value.split(' ');
+      this.setDataValue('firstName', parts[0]);
+      this.setDataValue('lastName', parts[1]);
+    },
+  },
+}, {
+  // Other model options
+});
+
+// Sync the model with the database
+(async () => {
+  await sequelize.sync({ force: true });
+  console.log('Model synchronized');
+})();
+
 ```
